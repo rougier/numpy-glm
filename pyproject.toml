@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "glm"
+version = "0.1"
+authors = [
+  {name = "Nicolas P. Rougier", email = "Nicolas.Rougier@inria.fr"},
+]
+description = "GL Mathematics for Numpy"
+readme = "README.md"
+requires-python = ">=3.1"
+install_requires=[
+    'numpy'
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
