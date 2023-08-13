@@ -119,9 +119,6 @@ GLM comes with all the standard GL mathematics functions:
 - [rotate](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glRotate.xml) (angle, x, y, z, *dtype, transpose*)
 - [translate](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glTranslate.xml) (x, y, z, *dtype, transpose*)
 - [lookat](https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml) (eye, center, up, *dtype, transpose*)
-
-<!-- 
-GlM offers also some convenient functions and classes:
 - [trackball](http://scv.bu.edu/documentation/presentations/visualizationworkshop08/materials/opengl/trackball.c) class
--->
+
 
