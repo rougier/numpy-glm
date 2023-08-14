@@ -5,13 +5,13 @@
 import numpy as np
 
 def normalize(V):
-    """ Normalize V between 0 and 1 """
+    """ Normalize V """
     
     return V/(1e-16+np.sqrt((np.array(V)**2).sum(axis=-1)))[..., np.newaxis]
 
 
-def clip(V, vmin=0, vmax=1):
-    """ Clip V between vmin and vmax """
+def clamp(V, vmin=0, vmax=1):
+    """ Clamp V between vmin and vmax """
     
     return np.minimum(np.maximum(V,vmin),vmax)
 
@@ -240,6 +240,13 @@ def scale(x=1, y=None, z=None, dtype=np.float32, transpose=False):
         return S
 
 
+def fit(V):
+    """ Fit vertices V to the normalized cube. """
+
+    vmin, vmax = V.min(axis=0), V.max(axis=0)
+    return 2 * (V - vmin) / max(vmax - vmin) - 1
+
+
 def translate(x=0, y=0, z=0, dtype=np.float32, transpose=False):
     """
     Translate by an offset (x, y, z) .
@@ -278,6 +285,13 @@ def translate(x=0, y=0, z=0, dtype=np.float32, transpose=False):
         return np.transpose(T)
     else:
         return T
+
+    
+def center(V):
+    """ Center vertices around the origin. """
+
+    vmin, vmax = V.min(axis=0), V.max(axis=0)
+    return V - (vmax + vmin)/2
 
 
 def xrotate(theta=0, dtype=np.float32, transpose=False):
@@ -430,7 +444,7 @@ def rotate(theta=0, x=0, y=0, z=1, dtype=np.float32, transpose=False):
 
 def align(U, V, dtype=np.float32, transpose=False):
     """
-    Find the rotation matrix that aligns U to V
+    Return the rotation matrix that aligns U to V
 
     Parameters
     ----------
@@ -470,22 +484,7 @@ def align(U, V, dtype=np.float32, transpose=False):
         return np.transpose(R)
     else:
         return R
-
-
         
-def fit_cube(V):
-    """ Fit vertices V into the unit cube (in place) """
-    
-    xmin, xmax = V[:,0].min(), V[:,0].max()
-    ymin, ymax = V[:,1].min(), V[:,1].max()
-    zmin, zmax = V[:,2].min(), V[:,2].max()
-    scale = max([xmax-xmin, ymax-ymin, zmax-zmin])
-    V /= scale
-    V[:,0] -= (xmax+xmin)/2/scale
-    V[:,1] -= (ymax+ymin)/2/scale
-    V[:,2] -= (zmax+zmin)/2/scale
-    return V
-
 
 def transform(V, mvp, viewport=None):
     """

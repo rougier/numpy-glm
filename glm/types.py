@@ -134,20 +134,8 @@ def vec3(count=1):
 
     if is_vec4(count):
         return vec4_to_vec3(count)
-
     return _vec3(count, ctype=np.float32)
 
-def is_vec4(V):
-    return (isinstance(V, np.ndarray) and len(V.shape) == 2
-            and V.shape[1] == 4 and V.dtype in [np.float32, np.float64])
-
-def vec4_to_vec3(V4):
-    """Convert a vec4 array to a vec3 array"""
-
-    V3 = _vec3(len(V4), V4.dtype)
-    V3[...] = V4[:,:3] / V4[:, 3, np.newaxis]
-    return V3
-    
 
 def dvec3(count=1):
     """3-components vectors of double precision floats (64 bits) """
@@ -188,18 +176,6 @@ def vec4(count=1):
     if is_vec3(count):
         return vec3_to_vec4(count)    
     return _vec4(count, ctype=np.float32)
-
-def is_vec3(V):
-    return (isinstance(V, np.ndarray) and len(V.shape) == 2
-            and V.shape[1] == 3 and V.dtype in [np.float32, np.float64])
-
-def vec3_to_vec4(V3):
-    """Convert a vec3 array to a vec4 array"""
-        
-    V4 = _vec4(len(V3), V3.dtype)
-    V4[:, :3] = V3
-    V4[:, 3] = 1
-    return V4
 
 def dvec4(count=1):
     """4-components vectors of double precision floats (64 bits) """
@@ -309,3 +285,56 @@ def mat4(count=1):
 def dmat4(count=1):
     """4x4 matrices of double precision floats (64 bits)"""
     return _mat4(count, ctype=np.float64)
+
+
+
+def is_vec(V, n):
+    return (isinstance(V, np.ndarray)
+            and len(V.shape) == 2
+            and V.shape[1] == n
+            and V.dtype in [np.float32, np.float64])
+
+def is_vec2(V): return is_vec(V, 2)
+def is_vec3(V): return is_vec(V, 3)
+def is_vec4(V): return is_vec(V, 4)
+
+def vec2_to_vec3(V2):
+    """ vec2 to vec3 (z=0) """
+    V3 = _vec3(len(V2), V2.dtype)
+    V3[:, :2] = V2
+    V3[:, 2] = 0
+    return V3
+
+def vec2_to_vec4(V2):
+    """ vec2 to vec4 (z=0, w=1) """
+    V4 = _vec4(len(V2), V2.dtype)
+    V4[:, :2] = V2
+    V4[:, 2:] = 0, 1
+    return V4
+
+def vec3_to_vec2(V3):
+    """ vec3 to vec2 """
+    V2 = _vec2(len(V3), V3.dtype)
+    V2[...] = V3[...,:2]
+    return V2
+
+def vec3_to_vec4(V3):
+    """ vec3 to vec4 (w=1) """
+    V4 = _vec4(len(V3), V3.dtype)
+    V4[:, :3] = V3
+    V4[:, 3] = 1
+    return V4
+
+def vec4_to_vec3(V4):
+    """ vec4 to vec4 (x/w, y/w, z/w) """
+    V3 = _vec3(len(V4), V4.dtype)
+    V3[...] = V4[:,:3] / V4[:, 3, np.newaxis]
+    return V3
+
+def vec4_to_vec2(V4):
+    """ vec4 to vec4 (x/w, y/w) """
+    V2 = _vec2(len(V4), V4.dtype)
+    V2[...] = V4[:,:2] / V4[:, 3, np.newaxis]
+    return V2
+
+
