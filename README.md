@@ -5,7 +5,13 @@
 
 GLM offers a set of objects and functions to ease the design of 3D applications while taking advantage of the numpy library. The main objects are vectors (`vec2`, `vec3`, `vec4`), matrices (`mat2`, `mat3`, `mat4`) and vectorized lists (`vlist`).  Vectors and matrices possess several variants depending on the base type (see below) and are memory tracked. This means it is possible to know anytime the smallest contiguous block of memory that has changed. This can be used to maintain a GPU copy up-to-date.
 
-#### Example usage
+* [Example usages](#example-usage)
+* [Vectorized lists](#vectorized-lists)
+* [Vectors & matrices](#vectors--matrices)
+* [GL and GLU API](#gl-and-glu)
+
+
+## Example usage
 
 This is the code to get the 3D bunny display on the top-right corner. You'll need  [meshio](https://github.com/nschloe/meshio) to read the mesh file and [matplotlib](https://matplotlib.org/) to display it.
 
@@ -39,9 +45,7 @@ ax.add_collection(PolyCollection(faces[...,:2], alpha=0.85, linewidth = 0.5,
 plt.show()
 ```
 
-## API
-
-### Vectors & Matrices
+## Vectors & Matrices
 
 The generic notation is:
 
@@ -58,8 +62,6 @@ with T in [`b`, `i` , `u`, `h`, `d`, `f`, Ø] and N in [2,3,4].
 | `h`    | float            | 16 bits | `np.float16`  |
 |  Ø     | float            | 32 bits | `np.float32`  |
 | `h`    | float            | 64 bits | `np.float64`  |
-
-**Example usage**
 
 ```python
 import glm
@@ -80,14 +82,15 @@ V = glm.vec3(V)
 # A 4x4 matrix of floats (32 bits)
 M = glm.mat4()
 M.xyzw = 1,2,3,1
-
 ```
 
-### Vectorized lists 
+<p align="right"><a href="#gl-mathematics-with-numpy"><b>Back to top</b></a></p>
+
+
+
+## Vectorized lists 
 
 Vectorized lists (`vlist`) correspond to ragged arrays where items have the same type but different lengths. There are three way to declare a vectorized list.
-
-**Example usage**
 
 ```python
 import glm
@@ -107,8 +110,10 @@ for v in V: print(v)
 
 The underlying structure is a regular numpy array (`vlist.data`).
 
+<p align="right"><a href="#gl-mathematics-with-numpy"><b>Back to top</b></a></p>
 
-### GL and GLU
+
+## GL and GLU
 
 * glm.**[viewport](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glViewport.xhtml)**(x, y, width, height, *dtype=np.float32, transpose=False*)
   
@@ -313,3 +318,6 @@ The underlying structure is a regular numpy array (`vlist.data`).
   > | `value`     | float or vecN    | Value to normalize             |
   > | `vmin`      | float            | Minimum value                  |
   > | `vmax`      | float            | Maximum value                  |
+
+<p align="right"><a href="#gl-mathematics-with-numpy"><b>Back to top</b></a></p>
+
