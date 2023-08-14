@@ -249,7 +249,7 @@ The underlying structure is a regular numpy array (`vlist.data`).
   > | Parameters  | Type    | Description                    |
   > |:------------|:--------|:-------------------------------|
   > | `U`         | vecN    | First vector                   |
-  > | `V`         | vecN    | Secnd vector                   |
+  > | `V`         | vecN    | Second vector                  |
   > | `dtype`     | dtype   | Dtype of the resulting matrix  |
   > | `transpose` | boolean | Whether to transpose result    |
 
@@ -292,7 +292,7 @@ The underlying structure is a regular numpy array (`vlist.data`).
   > |:------------|:--------|:-------------------------------|
   > | `eye`       | vec3    | Eye position                   |
   > | `center`    | vec3    | Reference point                |
-  > | `up`        | vec3    | Directino of the up vector     |
+  > | `up`        | vec3    | Direction of the up vector     |
   > | `dtype`     | dtype   | Dtype of the resulting matrix  |
   > | `transpose` | boolean | Whether to transpose result    |
 
@@ -304,7 +304,7 @@ The underlying structure is a regular numpy array (`vlist.data`).
   > |:------------|:--------|:-------------------------------|
   > | `V`         | vecN    | Vector to normalize            |
 
-* glm.**[clamp](https://registry.khronos.org/OpenGL-Refpages/gl4/html/clamp.xhtml)**(v)
+* glm.**[clamp](https://registry.khronos.org/OpenGL-Refpages/gl4/html/clamp.xhtml)**(value, vmin, vmax)
 
   > Return value bound between vmin and vmax
   >
