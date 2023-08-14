@@ -20,7 +20,7 @@ def test_default_shape():
     assert(vec3().shape == (1,3))
     assert(vec4().shape == (1,4))
 
-def test_ctype():
+def test_dtype():
     assert(bvec2(1).dtype == np.ubyte)
     assert(bvec3(1).dtype == np.ubyte)
     assert(bvec4(1).dtype == np.ubyte)

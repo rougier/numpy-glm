@@ -6,14 +6,12 @@
 GLM offers a set of objects and functions for 3D geometry inspired by the OpenGL API and the GLSL language.
 """
 
+import array
 from . glm import *
-from . types import *
+from . vlist import *
+from . vec234 import *
+from . mat234 import *
 
-from . ragged_array import ragged_array as vlist
-from . tracked_array import tracked_array
-from . swizzle_array import swizzle_array
-
-from . trackball import Trackball
 from . shapes import sphere, cube
 
 
