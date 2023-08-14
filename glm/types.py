@@ -15,14 +15,17 @@ ctypes  = [np.int8, np.uint8,
            np.int32, np.uint32, np.float32,
            np.int64, np.uint64, np.float64]
 
-__all__ = [ "bvec2", "ivec2", "uvec2", "hvec2", "vec2", "dvec2",
-            "bvec3", "ivec3", "uvec3", "hvec3", "vec3", "dvec3",
-            "bvec4", "ivec4", "uvec4", "hvec4", "vec4", "dvec4",
-            "vec2_t", "vec3_t", "vec4_t",
-            "bmat2", "imat2", "umat2", "hmat2", "mat2", "dmat2",
-            "bmat3", "imat3", "umat3", "hmat3", "mat3", "dmat3",
-            "bmat4", "imat4", "umat4", "hmat4", "mat4", "dmat4",
-            "mat2_t", "mat3_t", "mat4_t" ]
+__all__ = [
+    "bvec2", "ivec2", "uvec2", "hvec2", "vec2", "dvec2", "to_vec2", "as_vec2",
+    "bvec3", "ivec3", "uvec3", "hvec3", "vec3", "dvec3", "to_vec3", "as_vec3",
+    "bvec4", "ivec4", "uvec4", "hvec4", "vec4", "dvec4", "to_vec4", "as_vec4",
+    "vec2_t", "vec3_t", "vec4_t",
+    "bmat2", "imat2", "umat2", "hmat2", "mat2", "dmat2",
+    "bmat3", "imat3", "umat3", "hmat3", "mat3", "dmat3",
+    "bmat4", "imat4", "umat4", "hmat4", "mat4", "dmat4",
+    "mat2_t", "mat3_t", "mat4_t"
+]
+
 
 
 def scalar_t(ctype):
@@ -60,7 +63,7 @@ def mat4_t(ctype):
     
     return np.dtype((ctype, (4,4)))
 
-class _scalar(tracked_array):
+class scalar_array(tracked_array):
     """Array of scalars (tracked)"""
     
     def __new__(subtype, count=1, ctype=np.float32, buffer=None,
@@ -68,7 +71,7 @@ class _scalar(tracked_array):
         return super().__new__(subtype, count, scalar_t(ctype),
                                buffer, offset, strides, order)
 
-class _vec2(swizzle_array):
+class vec2_array(swizzle_array):
     """2-components vectors"""
     
     swizzle = "xy", "ra"
@@ -78,32 +81,70 @@ class _vec2(swizzle_array):
         return super().__new__(subtype, count, vec2_t(ctype),
                                buffer, offset, strides, order)
 
+def as_vec2(other, dtype=None):
+    """ View other as a vec2 with given dtype """
+        
+    V = np.asanyarray(other).reshape(-1,2)
+    if dtype is None:
+        return V.view(vec2_array)
+    else:
+        return V.astype(dtype).view(vec2_array)
+
+def to_vec2(other, dtype=None):
+    """ Convert other to a vec2:
+
+    * v    -> vec2 : v[::2] -> v[i],v[i+1]
+    * vec2 -> vec2 : x,y     -> x,y
+    * vec3 -> vec2 : x,y,z   -> x,y
+    * vec4 -> vec2 : x,y,z,w -> x/w,y/w
+    """
+
+    V = np.array(other)
+    dtype = dtype if dtype is not None else V.dtype
+
+    if len(V.shape) == 1 and V.size % 2 == 0:
+        _V = vec2_array(V.size//2, dtype)
+        _V.ravel()[...] = V
+        return _V        
+    elif len(V.shape) == 2:
+        _V = vec2_array(len(V), dtype)
+        _V[...] = V[:,:2]
+        if V.shape[1] == 2:
+            return _V
+        elif V.shape[1] == 3:
+            return _V
+        elif V.shape[1] == 4:
+            _V /= V[:,3, np.newaxis]
+            return _V
+    
+    raise TypeError("Cannot convert %s to vec2" % other) 
+    
 def bvec2(count=1):
-    """2-components vectors of booleans (8 bits) """
-    return _vec2(count, ctype=np.uint8)
+    """2-components vectors of unsigned bytes (8 bits) """
+    return vec2_array(count, ctype=np.ubyte)
 
 def ivec2(count=1):
     """2-components vectors of signed integers (32 bits) """
-    return _vec2(count, ctype=np.int32)
+    return vec2_array(count, ctype=np.int32)
 
 def uvec2(count=1):
     """2-components vectors of unsigned integers (32 bits) """
-    return _vec2(count, ctype=np.uint32)
+    return vec2_array(count, ctype=np.uint32)
 
 def hvec2(count=1):
     """2-components vectors of half precision floats (16 bits) """
-    return _vec2(count, ctype=np.float16)
+    return vec2_array(count, ctype=np.float16)
 
 def vec2(count=1):
     """2-components vectors of single precision floats (32 bits) """
-    return _vec2(count, ctype=np.float32)
+    return vec2_array(count, ctype=np.float32)
 
 def dvec2(count=1):
     """2-components vectors of double precision floats (64 bits) """
-    return _vec2(count, ctype=np.float64)
+    return vec2_array(count, ctype=np.float64)
 
 
-class _vec3(swizzle_array):
+class vec3_array(swizzle_array):
     """3-components vectors."""
         
     swizzle = "xyz", "rgb"
@@ -113,38 +154,74 @@ class _vec3(swizzle_array):
         return super().__new__(subtype, count, vec3_t(ctype),
                               buffer, offset, strides, order)
 
+    
+def as_vec3(other, dtype=None):
+    """ View other as a vec3 with given dtype """    
+    
+    V = np.asanyarray(other).reshape(-1,3)
+    if dtype is None:
+        return V.view(vec3_array)
+    else:
+        return V.astype(dtype).view(vec3_array)
+
+def to_vec3(other, dtype=None):
+    """ Convert other to a vec3
+
+    * v    -> vec3 : v[::3]  -> v[i],v[i+1],v[i+2]
+    * vec2 -> vec3 : x,y     -> x,y,0
+    * vec3 -> vec3 : x,y,z   -> x,y,z
+    * vec4 -> vec3 : x,y,z,w -> x/w,y/w,z/w
+    """
+
+    V = np.array(other)
+    dtype = dtype if dtype is not None else V.dtype
+
+    if len(V.shape) == 1 and V.size % 3 == 0:
+        _V = vec3_array(V.size//3, dtype)
+        _V.ravel()[...] = V
+        return _V        
+    elif len(V.shape) == 2:
+        _V = vec3_array(len(V), dtype)
+        if V.shape[1] == 2:
+            _V[:,:2] = V
+            _V[:, 2] = 0
+            return _V
+        elif V.shape[1] == 3:
+            _V[...] = V
+            return _V        
+        elif V.shape[1] == 4:
+            _V[...] = V[:,:3] / V[:,3, np.newaxis]
+            return _V
+    
+    raise TypeError("Cannot convert %s to vec3" % other) 
+
 def bvec3(count=1):
     """3-components vectors of booleans (8 bits) """
-    return _vec3(count, ctype=np.uint8)
+    return vec3_array(count, ctype=np.uint8)
 
 def ivec3(count=1):
     """3-components vectors of signed integers (32 bits) """
-    return _vec3(count, ctype=np.int32)
+    return vec3_array(count, ctype=np.int32)
 
 def uvec3(count=1):
     """3-components vectors of unsigned integers (32 bits) """
-    return _vec3(count, ctype=np.uint32)
+    return vec3_array(count, ctype=np.uint32)
 
 def hvec3(count=1):
     """3-components vectors of half precision floats (16 bits) """
-    return _vec3(count, ctype=np.float16)
+    return vec3_array(count, ctype=np.float16)
 
 def vec3(count=1):
     """3-components vectors of single precision floats (32 bits) """
-
-    if is_vec4(count):
-        return vec4_to_vec3(count)
-    return _vec3(count, ctype=np.float32)
-
+    return vec3_array(count, ctype=np.float32)
 
 def dvec3(count=1):
     """3-components vectors of double precision floats (64 bits) """
-    return _vec3(count, ctype=np.float64)
+    return vec3_array(count, ctype=np.float64)
 
 
 
-
-class _vec4(swizzle_array):
+class vec4_array(swizzle_array):
     """4-components vectors"""
     
     swizzle = "xyzw", "rgba"
@@ -154,35 +231,74 @@ class _vec4(swizzle_array):
         return super().__new__(subtype, count, vec4_t(ctype),
                                buffer, offset, strides, order)
 
+def as_vec4(other, dtype=None):
+    """ View other as a vec4 with given dtype """    
+        
+    V = np.asanyarray(other).reshape(-1,4)
+    if dtype is None:
+        return V.view(vec4_array)
+    else:
+        return V.astype(dtype).view(vec4_array)
+
+def to_vec4(other, dtype=None):
+    """ Convert other to a vec4
+
+    * v    -> vec4 : v[::4] -> v[i],v[i+1],v[i+2],v[i+3]
+    * vec2 -> vec4 : x,y     -> x,y,0,1
+    * vec3 -> vec4 : x,y,z   -> x,y,z,1
+    * vec4 -> vec4 : x,y,z,w -> x,y,z,w
+    """
+
+    V = np.array(other)
+    dtype = dtype if dtype is not None else V.dtype
+
+    if len(V.shape) == 1 and V.size % 4 == 0:
+        _V = vec4_array(V.size//4, dtype)
+        _V.ravel()[...] = V
+        return _V        
+    elif len(V.shape) == 2:
+        _V = vec4_array(len(V), dtype)
+        if V.shape[1] == 2:
+            _V[:,:2] = V
+            _V[:, 2] = 0
+            _V[:, 3] = 1
+            return _V
+        elif V.shape[1] == 3:
+            _V[:,:3] = V
+            _V[:, 3] = 1
+            return _V        
+        elif V.shape[1] == 4:
+            _V[...] = V
+            return _V
+    
+    raise TypeError("Cannot convert %s to vec3" % other) 
+
 def bvec4(count=1):
     """4-components vectors of booleans (8 bits) """
-    return _vec4(count, ctype=np.uint8)
+    return vec4_array(count, ctype=np.uint8)
 
 def ivec4(count=1):
     """4-components vectors of signed integers (32 bits) """
-    return _vec4(count, ctype=np.int32)
+    return vec4_array(count, ctype=np.int32)
 
 def uvec4(count=1):
     """4-components vectors of unsigned integers (32 bits) """
-    return _vec4(count, ctype=np.uint32)
+    return vec4_array(count, ctype=np.uint32)
 
 def hvec4(count=1):
     """4-components vectors of half precision floats (16 bits) """
-    return _vec4(count, ctype=np.float16)
+    return vec4_array(count, ctype=np.float16)
 
 def vec4(count=1):
     """4-components vectors of single precision floats (32 bits) """
-
-    if is_vec3(count):
-        return vec3_to_vec4(count)    
-    return _vec4(count, ctype=np.float32)
+    return vec4_array(count, ctype=np.float32)
 
 def dvec4(count=1):
     """4-components vectors of double precision floats (64 bits) """
-    return _vec4(count, ctype=np.float64)
+    return vec4_array(count, ctype=np.float64)
 
 
-class _mat2(swizzle_array):
+class mat2_array(swizzle_array):
     """2x2 matrices"""
 
     swizzle = "xy", "ra"
@@ -194,30 +310,30 @@ class _mat2(swizzle_array):
 
 def bmat2(count=1):
     """2x2 matrices of booleans (8 bits)"""
-    return _mat2(count, ctype=np.uint8)
+    return mat2_array(count, ctype=np.uint8)
 
 def imat2(count=1):
     """2x2 matrices of integers (32 bits)"""
-    return _mat2(count, ctype=np.int32)
+    return mat2_array(count, ctype=np.int32)
 
 def umat2(count=1):
     """2x2 matrices of unsigned integers (32 bits)"""
-    return _mat2(count, ctype=np.uint32)
+    return mat2_array(count, ctype=np.uint32)
 
 def hmat2(count=1):
     """2x2 matrices of half precision floats (16 bits)"""
-    return _mat2(count, ctype=np.float16)
+    return mat2_array(count, ctype=np.float16)
 
 def mat2(count=1):
     """2x2 matrices of double precision floats (32 bits)"""
-    return _mat2(count, ctype=np.float32)
+    return mat2_array(count, ctype=np.float32)
 
 def dmat2(count=1):
     """2x2 matrices of double precision floats (64 bits)"""
-    return _mat2(count, ctype=np.float64)
+    return mat2_array(count, ctype=np.float64)
 
 
-class _mat3(swizzle_array):
+class mat3_array(swizzle_array):
     """3x3 matrices"""
 
     swizzle = "xyz", "rgb"
@@ -229,30 +345,30 @@ class _mat3(swizzle_array):
 
 def bmat3(count=1):
     """3x3 matrices of booleans (8 bits)"""
-    return _mat3(count, ctype=np.uint8)
+    return mat3_array(count, ctype=np.uint8)
 
 def imat3(count=1):
     """3x3 matrices of integers (32 bits)"""
-    return _mat3(count, ctype=np.int32)
+    return mat3_array(count, ctype=np.int32)
 
 def umat3(count=1):
     """3x3 matrices of unsigned integers (32 bits)"""
-    return _mat3(count, ctype=np.uint32)
+    return mat3_array(count, ctype=np.uint32)
 
 def hmat3(count=1):
     """3x3 matrices of half precision floats (16 bits)"""
-    return _mat3(count, ctype=np.float16)
+    return mat3_array(count, ctype=np.float16)
 
 def mat3(count=1):
     """3x3 matrices of single precision floats (32 bits)"""
-    return _mat3(count, ctype=np.float32)
+    return mat3_array(count, ctype=np.float32)
 
 def dmat3(count=1):
     """3x3 matrices of double precision floats (64 bits)"""
-    return _mat3(count, ctype=np.float64)
+    return mat3_array(count, ctype=np.float64)
 
 
-class _mat4(swizzle_array):
+class mat4_array(swizzle_array):
     """4x4 matrices"""
 
     swizzle = "xyzw", "rgba"
@@ -264,77 +380,27 @@ class _mat4(swizzle_array):
 
 def bmat4(count=1):
     """4x4 matrices of booleans (8 bits)"""
-    return _mat4(count, ctype=np.uint8)
+    return mat4_array(count, ctype=np.uint8)
 
 def imat4(count=1):
     """4x4 matrices of integers (32 bits)"""
-    return _mat4(count, ctype=np.int32)
+    return mat4_array(count, ctype=np.int32)
 
 def umat4(count=1):
     """4x4 matrices of unsigned integers (32 bits)"""
-    return _mat4(count, ctype=np.uint32)
+    return mat4_array(count, ctype=np.uint32)
 
 def hmat4(count=1):
     """4x4 matrices of half precision floats (16 bits)"""
-    return _mat4(count, ctype=np.float16)
+    return mat4_array(count, ctype=np.float16)
 
 def mat4(count=1):
     """4x4 matrices of single precision floats (32 bits)"""
-    return _mat4(count, ctype=np.float32)
+    return mat4_array(count, ctype=np.float32)
 
 def dmat4(count=1):
     """4x4 matrices of double precision floats (64 bits)"""
-    return _mat4(count, ctype=np.float64)
+    return mat4_array(count, ctype=np.float64)
 
-
-
-def is_vec(V, n):
-    return (isinstance(V, np.ndarray)
-            and len(V.shape) == 2
-            and V.shape[1] == n
-            and V.dtype in [np.float32, np.float64])
-
-def is_vec2(V): return is_vec(V, 2)
-def is_vec3(V): return is_vec(V, 3)
-def is_vec4(V): return is_vec(V, 4)
-
-def vec2_to_vec3(V2):
-    """ vec2 to vec3 (z=0) """
-    V3 = _vec3(len(V2), V2.dtype)
-    V3[:, :2] = V2
-    V3[:, 2] = 0
-    return V3
-
-def vec2_to_vec4(V2):
-    """ vec2 to vec4 (z=0, w=1) """
-    V4 = _vec4(len(V2), V2.dtype)
-    V4[:, :2] = V2
-    V4[:, 2:] = 0, 1
-    return V4
-
-def vec3_to_vec2(V3):
-    """ vec3 to vec2 """
-    V2 = _vec2(len(V3), V3.dtype)
-    V2[...] = V3[...,:2]
-    return V2
-
-def vec3_to_vec4(V3):
-    """ vec3 to vec4 (w=1) """
-    V4 = _vec4(len(V3), V3.dtype)
-    V4[:, :3] = V3
-    V4[:, 3] = 1
-    return V4
-
-def vec4_to_vec3(V4):
-    """ vec4 to vec4 (x/w, y/w, z/w) """
-    V3 = _vec3(len(V4), V4.dtype)
-    V3[...] = V4[:,:3] / V4[:, 3, np.newaxis]
-    return V3
-
-def vec4_to_vec2(V4):
-    """ vec4 to vec4 (x/w, y/w) """
-    V2 = _vec2(len(V4), V4.dtype)
-    V2[...] = V4[:,:2] / V4[:, 3, np.newaxis]
-    return V2
 
 

@@ -17,7 +17,7 @@ M = glm.perspective(25, 1, 1, 100) @ glm.translate(0.1, -0.45, -2.5)
 M = M @glm.xrotate(20) @ glm.yrotate(45) @ glm.scale(5)
 
 # Apply MVP 
-vertices = glm.vec3(glm.vec4(vertices) @ M.T)
+vertices = glm.to_vec3(glm.to_vec4(vertices) @ M.T)
 
 # Generate faces and sort them
 faces = vertices[indices]
