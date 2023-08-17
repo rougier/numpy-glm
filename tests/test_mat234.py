@@ -5,15 +5,16 @@
 import pytest
 import numpy as np
 from glm import *
+from glm import ndarray
 
 
 def test_dtypes():
-    assert(mat2_t(np.float32).base == np.float32)
-    assert(mat2_t(np.float32).shape == (2,2))
-    assert(mat3_t(np.float32).base == np.float32)
-    assert(mat3_t(np.float32).shape == (3,3))
-    assert(mat4_t(np.float32).base == np.float32)
-    assert(mat4_t(np.float32).shape == (4,4))
+    assert(ndarray.mat2_t(np.float32).base == np.float32)
+    assert(ndarray.mat2_t(np.float32).shape == (2,2))
+    assert(ndarray.mat3_t(np.float32).base == np.float32)
+    assert(ndarray.mat3_t(np.float32).shape == (3,3))
+    assert(ndarray.mat4_t(np.float32).base == np.float32)
+    assert(ndarray.mat4_t(np.float32).shape == (4,4))
 
 def test_default_type():
     assert(mat2().dtype == np.float32)
@@ -21,9 +22,9 @@ def test_default_type():
     assert(mat4().dtype == np.float32)
 
 def test_default_shape():
-    assert(mat2().shape == (1,2,2))
-    assert(mat3().shape == (1,3,3))
-    assert(mat4().shape == (1,4,4))
+    assert(mat2().shape == (2,2))
+    assert(mat3().shape == (3,3))
+    assert(mat4().shape == (4,4))
 
 def test_ctype():
     assert(bmat2(1).dtype == np.ubyte)

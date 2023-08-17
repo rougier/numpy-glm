@@ -3,12 +3,12 @@ import numpy as np
 from glm import *
 
 def test_dtypes():
-    assert(vec2_t(np.float32).base == np.float32)
-    assert(vec2_t(np.float32).shape == (2,))
-    assert(vec3_t(np.float32).base == np.float32)
-    assert(vec3_t(np.float32).shape == (3,))
-    assert(vec4_t(np.float32).base == np.float32)
-    assert(vec4_t(np.float32).shape == (4,))
+    assert(ndarray.vec2_t(np.float32).base == np.float32)
+    assert(ndarray.vec2_t(np.float32).shape == (2,))
+    assert(ndarray.vec3_t(np.float32).base == np.float32)
+    assert(ndarray.vec3_t(np.float32).shape == (3,))
+    assert(ndarray.vec4_t(np.float32).base == np.float32)
+    assert(ndarray.vec4_t(np.float32).shape == (4,))
 
 def test_default_type():
     assert(vec2().dtype == np.float32)
@@ -16,9 +16,9 @@ def test_default_type():
     assert(vec4().dtype == np.float32)
 
 def test_default_shape():
-    assert(vec2().shape == (1,2))
-    assert(vec3().shape == (1,3))
-    assert(vec4().shape == (1,4))
+    assert(vec2().shape == (2,))
+    assert(vec3().shape == (3,))
+    assert(vec4().shape == (4,))
 
 def test_dtype():
     assert(bvec2(1).dtype == np.ubyte)

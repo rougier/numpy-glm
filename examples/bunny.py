@@ -13,8 +13,8 @@ mesh = meshio.read("bunny.obj")
 vertices, indices = mesh.points, mesh.cells[0].data
 
 # Model / View / Projection matrix (MVP)
-M = glm.perspective(25, 1, 1, 100) @ glm.translate(0.1, -0.45, -2.5)
-M = M @glm.xrotate(20) @ glm.yrotate(45) @ glm.scale(5)
+M = glm.perspective(25, 1, 1, 100) @ glm.translate((0.1, -0.45, -2.5))
+M = M @glm.xrotate(20) @ glm.yrotate(45) @ glm.scale((5,5,5))
 
 # Apply MVP 
 vertices = glm.to_vec3(glm.to_vec4(vertices) @ M.T)

@@ -4,7 +4,7 @@
 # -----------------------------------------------------------------------------
 import numpy as np
 from . import glm
-from . types import mat4
+from . ndarray import mat4
 from . trackball import Trackball
 
 class Camera():

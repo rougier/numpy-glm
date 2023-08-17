@@ -33,37 +33,49 @@ def vec4_t(dtype):
 class scalar(tracked):
     """Array of scalars (tracked)"""
     
-    def __new__(subtype, count=1, dtype=np.float32, buffer=None,
+    def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
+        if count is None:
+            return super().__new__(subtype, 1, scalar_t(dtype),
+                                   buffer, offset, strides, order).squeeze()
         return super().__new__(subtype, count, scalar_t(dtype),
-                               buffer, offset, strides, order)
+                                buffer, offset, strides, order)
 
 class vec2(swizzle):
     """2 components vectors"""
     
     swizzle = "xy", "ra"
     
-    def __new__(subtype, count=1, dtype=np.float32, buffer=None,
+    def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
+        if count is None:
+            return super().__new__(subtype, 1, vec2_t(dtype),
+                                   buffer, offset, strides, order).squeeze()
         return super().__new__(subtype, count, vec2_t(dtype),
-                               buffer, offset, strides, order)
+                            buffer, offset, strides, order)
 
 class vec3(swizzle):
     """3 components vectors."""
         
     swizzle = "xyz", "rgb"
     
-    def __new__(subtype, count=1, dtype=np.float32, buffer=None,
+    def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
+        if count is None:
+            return super().__new__(subtype, 1, vec3_t(dtype),
+                                   buffer, offset, strides, order).squeeze()
         return super().__new__(subtype, count, vec3_t(dtype),
-                              buffer, offset, strides, order)
+                            buffer, offset, strides, order)
 
 class vec4(swizzle):
     """4 components vectors"""
     
     swizzle = "xyzw", "rgba"
 
-    def __new__(subtype, count=1, dtype=np.float32, buffer=None,
+    def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
+        if count is None:
+            return super().__new__(subtype, 1, vec4_t(dtype),
+                                   buffer, offset, strides, order).squeeze()
         return super().__new__(subtype, count, vec4_t(dtype),
-                               buffer, offset, strides, order)
+                            buffer, offset, strides, order)

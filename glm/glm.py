@@ -3,6 +3,7 @@
 # Copyright 2023 Nicolas P. Rougier - BSD 2 Clauses licence
 # -----------------------------------------------------------------------------
 import numpy as np
+from . ndarray import mat4
 
 def normalize(V):
     """ Normalize V """
@@ -19,33 +20,32 @@ def clamp(V, vmin=0, vmax=1):
 def viewport(x, y, w, h, d, dtype=np.float32, transpose=False):
     """ Viewport matrix
 
-    Parameters
-    ----------
+    Args:
 
-    x : float
+        x (int):
+            X origin (pixels) of the viewport (lower left)
 
+        y (int):
+            Y origin (pixels) of the viewport (lower left)
+
+        h (int):
+            Height (pixels) of the viewport 
+
+        w (int):
+            Width (pixels) of the viewport 
+
+        d (float):
+            Depth of the viewport.
     
-    y : float
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    
-    h : float
+        transpose (bool):
+            Whether to transpose result
 
-    
-    w : float
+    Returns:
 
-    
-    d : float
-    
-    dtype : numpy dtype
-        dtype of the resulting array
-
-    transpose : boolean
-        Whether to transpose result
-
-    Returns
-    -------
-
-    Viewport matrix (4x4 array)
+        (mat4): Viewport matrix
     """
 
     M = np.array([[w/2, 0, 0, x+w/2],
@@ -53,47 +53,45 @@ def viewport(x, y, w, h, d, dtype=np.float32, transpose=False):
                   [0, 0, d/2,   d/2],
                   [0, 0, 0,       1]], dtype=dtype)
     if transpose:
-        return np.transpose(M)
+        return np.transpose(M).view(mat4)
     else:
-        return M
+        return M.view(mat4)
 
 
 
 def frustum(left, right, bottom, top, znear, zfar, dtype=np.float32, transpose=False):
-    """Create view frustum
+    r"""View frustum matrix
 
-    Parameters
-    ----------
+    Args:
     
-    left : float
-        Left coordinate of the field of view.
+        left (float):
+            Left coordinate of the field of view.
 
-    right : float
-        Right coordinate of the field of view.
+        right (float):
+            Right coordinate of the field of view.
 
-    bottom : float
-        Bottom coordinate of the field of view.
+        bottom (float):
+            Bottom coordinate of the field of view.
 
-    top : float
-        Top coordinate of the field of view.
+        top (float):
+            Top coordinate of the field of view.
 
-    znear : float
-        Near coordinate of the field of view.
+        znear (float):
+            Near coordinate of the field of view.
 
-    zfar : float
-        Far coordinate of the field of view.
+        zfar (float):
+            Far coordinate of the field of view.
 
-    dtype : numpy dtype
-        dtype of the resulting array
+        dtype (numpy dtype):
+            dtype of the resulting array
 
-    transpose : boolean
-        Whether to transpose result
+        transpose (boolean): 
+            Whether to transpose result
 
     
-    Returns
-    -------
-
-    View frustum matrix (4x4 array)
+    Returns:
+    
+        (mat4): View frustum matrix
     """
 
     M = np.zeros((4, 4), dtype=dtype)
@@ -106,40 +104,37 @@ def frustum(left, right, bottom, top, znear, zfar, dtype=np.float32, transpose=F
     M[3, 2] = -1.0
 
     if transpose:
-        return np.transpose(M)
+        return np.transpose(M).view(mat4)
     else:
-        return M
+        return M.view(mat4)
 
 
 def perspective(fovy, aspect, znear, zfar, dtype=np.float32, transpose=False):
-    """Create perspective projection matrix
+    """ Perspective projection matrix
 
-    Parameters
-    ----------
+    Args:
     
-    fovy : float
-        The field of view along the y axis.
+        fovy (float):
+            The field of view along the y axis.
 
-    aspect : float
-        Aspect ratio of the view.
+        aspect (float):
+            Aspect ratio of the view.
 
-    znear : float
-        Near coordinate of the field of view.
+        znear (float):
+            Near coordinate of the field of view.
 
-    zfar : float
-        Far coordinate of the field of view.
+        zfar (float):
+            Far coordinate of the field of view.
 
-    dtype : numpy dtype
-        dtype of the resulting array
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    transpose : boolean
-        Whether to transpose result
-
+        transpose (bool):
+            Whether to transpose result
     
-    Returns
-    -------
+    Returns:
 
-    Perspective projection matrix (4x4 array)
+        (mat4): Perspective projection matrix
     """
 
     h = np.tan(0.5*np.radians(fovy)) * znear
@@ -150,38 +145,35 @@ def perspective(fovy, aspect, znear, zfar, dtype=np.float32, transpose=False):
 def ortho(left, right, bottom, top, znear, zfar, dtype=np.float32, transpose=False):
     """Create orthographic projection matrix
 
-    Parameters
-    ----------
+    Args:
     
-    left : float
-        Left coordinate of the field of view.
+        left (float):
+            Left coordinate of the field of view.
 
-    right : float
-        Right coordinate of the field of view.
+        right (float):
+            Right coordinate of the field of view.
 
-    bottom : float
-        Bottom coordinate of the field of view.
+        bottom (float):
+            Bottom coordinate of the field of view.
 
-    top : float
-        Top coordinate of the field of view.
+        top (float):
+            Top coordinate of the field of view.
 
-    znear : float
-        Near coordinate of the field of view.
+        znear (float):
+            Near coordinate of the field of view.
 
-    zfar : float
-        Far coordinate of the field of view.
+        zfar (float):
+            Far coordinate of the field of view.
 
-    dtype : numpy dtype
-        dtype of the resulting array
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    transpose : boolean
-        Whether to transpose result
-
+        transpose (boolean): 
+            Whether to transpose result
     
-    Returns
-    -------
+    Returns:
     
-    Orthographic projection matrix (4x4 array)
+        (mat4): Orthographic projection matrix
     """
 
     M = np.zeros((4, 4), dtype=dtype)
@@ -194,126 +186,166 @@ def ortho(left, right, bottom, top, znear, zfar, dtype=np.float32, transpose=Fal
     M[2, 3] = -(zfar + znear) / float(zfar - znear)
 
     if transpose:
-        return np.transpose(M)
+        return np.transpose(M).view(mat4)
     else:
-        return M
+        return M.view(mat4)
 
+def lookat(eye=(0,0,4.5), center=(0,0,0), up=(0,0,1), dtype=np.float32, transpose=False):
+    """
+    Creates a viewing matrix derived from an eye point, a reference
+    point indicating the center of the scene, and an up vector.
 
-def scale(x=1, y=None, z=None, dtype=np.float32, transpose=False):
-    """Non-uniform scaling along the x, y, and z axes
+    Args:
 
-    Parameters
-    ----------
-    
-    x : float
-        X coordinate of the translation vector.
+        eye (vec3):
+            Eye point
 
-    y : float | None
-        Y coordinate of the translation vector. If None, `x` will be used.
+        center (vec3):
+            Reference point
 
-    z : float | None
-        Z coordinate of the translation vector. If None, `x` will be used.
+        up (vec3):
+            Up vector
 
-    dtype : numpy dtype
-        dtype of the resulting array
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    transpose : boolean
-        Whether to transpose result
+        transpose (boolean): 
+            Whether to transpose result
 
-    
-    Returns
-    -------
-    
-    Scaling matrix (4x4 array)
+    Returns:
+
+        (mat4): View matrix
     """
 
-    y = y or x
-    z = z or x
+    eye = np.array(eye)
+    center = np.array(center)
+    up = np.array(up)
+    
+    Z = normalize(eye - center)
+    Y = up
+    X = normalize(np.cross(Y, Z))
+    Y = normalize(np.cross(Z, X))    
+    return np.array([
+        [X[0], X[1], X[2], -np.dot(X, eye)],
+        [Y[0], Y[1], Y[2], -np.dot(Y, eye)],
+        [Z[0], Z[1], Z[2], -np.dot(Z, eye)],
+        [0, 0, 0, 1]], dtype=dtypte).view(mat4)
+
+
+def scale(scale, dtype=np.float32, transpose=False):
+    """Non-uniform scaling along the x, y, and z axes
+
+    Args:
+    
+        scale (vec3):
+            Scaling vector
+
+        dtype (np dtype):
+            dtype of the resulting array
+
+        transpose (bool):
+            Whether to transpose result
+    
+    Returns:
+    
+        (mat4): Scaling matrix
+    """
+
+    x,y,z = np.array(scale)
     S = np.array([[x, 0, 0, 0],
                   [0, y, 0, 0],
                   [0, 0, z, 0],
                   [0, 0, 0, 1]], dtype=dtype)
     
     if transpose:
-        return np.transpose(S)
+        return np.transpose(S).view(mat4)
     else:
-        return S
+        return S.view(mat4)
 
 
-def fit(V):
-    """ Fit vertices V to the normalized cube. """
+def fit(vertices):
+    """ Fit vertices to the normalized cube
 
-    vmin, vmax = V.min(axis=0), V.max(axis=0)
-    return 2 * (V - vmin) / max(vmax - vmin) - 1
+    Args:
 
+        vertices (np.array): Vertices to fit
 
-def translate(x=0, y=0, z=0, dtype=np.float32, transpose=False):
+    Returns:
+
+        (np.ndarray): vertices contained in the normalize cube    
     """
-    Translate by an offset (x, y, z) .
 
-    Parameters
-    ----------
-    
-    x : float
-        X coordinate of a translation vector.
+    vmin = vertices.min(axis=0)
+    vmax = vertices.max(axis=0)
+    return 2*(vertices-vmin) / max(vmax-vmin)-1
 
-    y : float | None
-        Y coordinate of translation vector. If None, `x` will be used.
 
-    z : float | None
-        Z coordinate of translation vector. If None, `x` will be used.
-
-    dtype : numpy dtype
-        dtype of the resulting array
-
-    transpose : boolean
-        Whether to transpose result
-
-    
-    Returns
-    -------
-    
-    Translation matrix (4x4 array)
+def translate(translate, dtype=np.float32, transpose=False):
     """
+    Translation by a given vector
+
+    Args:
     
+        translate (vec3):
+            Translation vector.
+
+        dtype (np dtype):
+            dtype of the resulting array
+
+        transpose (bool):
+            Whether to transpose result
+    
+    Returns:
+    
+        (mat4): Translation matrix
+    """
+
+    x, y, z = np.array(translate)
     T = np.array([[1, 0, 0, x],
                   [0, 1, 0, y],
                   [0, 0, 1, z],
                   [0, 0, 0, 1]], dtype=dtype)
     
     if transpose:
-        return np.transpose(T)
+        return np.transpose(T).view(mat4)
     else:
-        return T
+        return T.view(mat4)
 
     
-def center(V):
-    """ Center vertices around the origin. """
+def center(vertices):
+    """ Center vertices around the origin.
 
-    vmin, vmax = V.min(axis=0), V.max(axis=0)
-    return V - (vmax + vmin)/2
+    Args:
+
+        vertices (np.array): Vertices to center
+
+    Returns:
+
+        (np.ndarray): vertices centered
+    """
+
+    vmin = vertices.min(axis=0)
+    vmax = vertices.max(axis=0)
+    return V - (vmax+vmin)/2
 
 
 def xrotate(theta=0, dtype=np.float32, transpose=False):
     """Rotation about the X axis
 
-    Parameters
-    ----------
+    Args:
     
-    theta : float
-        Specifies the angle of rotation, in degrees.
+        theta (float):
+            Specifies the angle of rotation, in degrees.
 
-    dtype : numpy dtype
-        dtype of the resulting array
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    transpose : boolean
-        Whether to transpose result
+        transpose (bool):
+            Whether to transpose result
 
-    
-    Returns
-    -------
-    
-    Rotation matrix (4x4 array)
+    Returns:
+
+        (mat4): Rotation matrix
     """
 
     t = np.radians(theta)
@@ -324,31 +356,28 @@ def xrotate(theta=0, dtype=np.float32, transpose=False):
                    [0, 0,  0, 1]], dtype=dtype)
     
     if transpose:
-        return np.transpose(R)
+        return np.transpose(R).view(mat4)
     else:
-        return R
+        return R.view(mat4)
     
 
 def yrotate(theta=0, dtype=np.float32, transpose=False):
     """Rotation about the Y axis
 
-    Parameters
-    ----------
+    Args:
     
-    theta : float
-        Specifies the angle of rotation, in degrees.
+        theta (float):
+            Specifies the angle of rotation, in degrees.
 
-    dtype : numpy dtype
-        dtype of the resulting array
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    transpose : boolean
-        Whether to transpose result
+        transpose (bool):
+            Whether to transpose result
 
+    Returns:
 
-    Returns
-    -------
-
-    Rotation matrix (4x4 array)
+        (mat4): Rotation matrix
     """
 
     t = np.radians(theta)
@@ -359,31 +388,28 @@ def yrotate(theta=0, dtype=np.float32, transpose=False):
                   [ 0, 0, 0, 1]], dtype=dtype)
     
     if transpose:
-        return np.transpose(R)
+        return np.transpose(R).view(mat4)
     else:
-        return R
+        return R.view(mat4)
 
 
 def zrotate(theta=0, dtype=np.float32, transpose=False):
     """Rotation about the Z axis
 
-    Parameters
-    ----------
-
-    theta : float
-        Specifies the angle of rotation, in degrees.
-
-    dtype : numpy dtype
-        dtype of the resulting array
-
-    transpose : boolean
-        Whether to transpose result
-
+    Args:
     
-    Returns
-    -------
+        theta (float):
+            Specifies the angle of rotation, in degrees.
 
-    Rotation matrix (4x4 array)
+        dtype (np.dtype):
+            dtype of the resulting array
+
+        transpose (bool):
+            Whether to transpose result
+
+    Returns:
+
+        (mat4): Rotation matrix
     """
 
     t = np.radians(theta)
@@ -394,38 +420,36 @@ def zrotate(theta=0, dtype=np.float32, transpose=False):
                   [ 0,  0, 0, 1]], dtype=dtype)
 
     if transpose:
-        return np.transpose(R)
+        return np.transpose(R).view(mat4)
     else:
-        return R
+        return R.view(mat4)
 
 
-def rotate(theta=0, x=0, y=0, z=1, dtype=np.float32, transpose=False):
+def rotate(theta, axis, dtype=np.float32, transpose=False):
     """Rotation about an arbitrary X axis
 
-    Parameters
-    ----------
+    Args:
 
-    theta : float
-        Specifies the angle of rotation, in degrees.
+        theta (float):
+            Specifies the angle of rotation, in degrees.
 
-    x,y,z : float
-        Axis of rotation
+        axis (vec3):
+            Axis of rotation
 
-    dtype : numpy dtype
-        dtype of the resulting array
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    transpose : boolean
-        Whether to transpose result
+        transpose (bool):
+            Whether to transpose result
 
-    
-    Returns
-    -------
+    Returns:
 
-    Rotation matrix (4x4 array)
+        (mat4): Rotation matrix 
     """
     
     t = np.radians(theta)
-    axis = normalize(np.asarray([x,y,z], dtype=np.float32))
+
+    axis = normalize(np.array(axis))
     a = np.cos(t/2)
     b, c, d = -axis*np.sin(t/2)
     aa, bb, cc, dd = a*a, b*b, c*c, d*d
@@ -436,9 +460,9 @@ def rotate(theta=0, x=0, y=0, z=1, dtype=np.float32, transpose=False):
                    [0,0,0,1]], dtype=dtype)
 
     if transpose:
-        return np.transpose(R)
+        return np.transpose(R).view(mat4)
     else:
-        return R
+        return R.view(mat4)
 
 
 
@@ -446,27 +470,23 @@ def align(U, V, dtype=np.float32, transpose=False):
     """
     Return the rotation matrix that aligns U to V
 
-    Parameters
-    ----------
+    Args:
 
-    U : 3 or 4 component vectors
-        First vector
+        U (vec[234]): 
+            First vector
 
-    U : 3 or 4 component vectors
-        Second vector
-    
-    dtype : numpy dtype
-        dtype of the resulting array
+        U (vec[234]):
+            Second vector
 
-    transpose : boolean
-        Whether to transpose result
+        dtype (np.dtype):
+            dtype of the resulting array
 
-    
-    Returns
-    -------
+        transpose (bool):
+            Whether to transpose result
 
-    Rotation matrix (4x4 array)
+    Returns:
 
+        (mat4): Rotation matrix
     """
     
     a, b = normalize(U), normalize(V)
@@ -481,42 +501,9 @@ def align(U, V, dtype=np.float32, transpose=False):
     R[3, 3] = 1
 
     if transpose:
-        return np.transpose(R)
+        return np.transpose(R).view(mat4)
     else:
-        return R
-        
-
-def transform(V, mvp, viewport=None):
-    """
-    Apply transform mvp to vertices V
-
-    Parameters
-    ----------
-    V : (n,3) array
-      Vertices array
-
-    mvp: 4x4 array
-      Transform matrix
-
-    viewport: 4x4 array
-      Viewport matrix (default is None)
-
-    Returns
-    -------
-    (n,3) array of transformed vertices
-    """
-    
-    V = np.asarray(V, dtype=np.float32) 
-    shape = V.shape
-    V = V.reshape(-1,3)
-    ones = np.ones(len(V), dtype=float)
-    V = np.c_[V.astype(float), ones]      # Homogenous coordinates
-    V = V @ mvp.T                         # Transformed coordinates
-    if viewport is not None:
-        V = V @ viewport.T
-    V = V/V[:,3].reshape(-1,1)            # Normalization
-    V = V[:,:3]                           # Normalized device coordinates
-    return V.reshape(shape)
+        return R.view(mat4)
 
 
 def frontback(T):
@@ -538,39 +525,6 @@ def frontback(T):
     return Z < 0, Z >= 0
 
 
-def lookat(eye=(0,0,4.5), center=(0,0,0), up=(0,0,1)):
-    """
-    Creates a viewing matrix derived from an eye point, a reference
-    point indicating the center of the scene, and an up vector.
-
-    Parameters:
-    -----------
-    eye : array-like
-       Eye point
-
-    center : array-like
-       Reference point
-
-    up : array-like 
-       Up vector
-
-    Returns:
-    --------
-    View matrix (4x4 array)
-    """
-    
-    Z = normalize(np.asarray(eye, dtype=np.float32) -
-                  np.asarray(center, dtype=np.float32))
-    Y = np.asarray(up, dtype=np.float32)
-    X = normalize(np.cross(Y, Z))
-    Y = normalize(np.cross(Z, X))    
-    return np.array([
-        [X[0], X[1], X[2], -np.dot(X, eye)],
-        [Y[0], Y[1], Y[2], -np.dot(Y, eye)],
-        [Z[0], Z[1], Z[2], -np.dot(Z, eye)],
-        [0, 0, 0, 1]])
-
-
 def camera(xrotation=25, yrotation=45, zoom=1, mode="perspective"):
     xrotation = min(max(xrotation, 0), 90)
     yrotation = min(max(yrotation, 0), 90)
@@ -582,47 +536,3 @@ def camera(xrotation=25, yrotation=45, zoom=1, mode="perspective"):
     else:
         proj  = perspective(25, 1, 1, 100)
     return proj @ view  @ model
-
-def sRGB_to_RGB(color):
-    color = np.asarray(color, dtype=float).reshape(-1, 3)
-    R, G, B = color[..., 0], color[..., 1], color[..., 2]
-    R = np.where(R > 0.04045, np.power((R + 0.055) / 1.055, 2.4), R / 12.92)
-    G = np.where(G > 0.04045, np.power((G + 0.055) / 1.055, 2.4), G / 12.92)
-    B = np.where(B > 0.04045, np.power((B + 0.055) / 1.055, 2.4), B / 12.92)
-    return np.c_[R, G, B]
-
-def RGB_to_sRGB(color):
-    color = np.asarray(color, dtype=float).reshape(-1, 3)
-    R, G, B = color[..., 0], color[..., 1], color[..., 2]
-    R = np.where(R > 0.0031308, 1.055 * np.power(R, 1 / 2.4) - 0.055, R * 12.92)
-    G = np.where(G > 0.0031308, 1.055 * np.power(G, 1 / 2.4) - 0.055, G * 12.92)
-    B = np.where(B > 0.0031308, 1.055 * np.power(B, 1 / 2.4) - 0.055, B * 12.92)
-    return np.c_[R, G, B]
-
-def sRGBA_to_RGBA(color):
-    color = np.asarray(color, dtype=float).reshape(-1, 4)
-    R, G, B, A = color[..., 0], color[..., 1], color[..., 2], color[..., 3]
-    R = np.where(R > 0.04045, np.power((R + 0.055) / 1.055, 2.4), R / 12.92)
-    G = np.where(G > 0.04045, np.power((G + 0.055) / 1.055, 2.4), G / 12.92)
-    B = np.where(B > 0.04045, np.power((B + 0.055) / 1.055, 2.4), B / 12.92)
-    return np.c_[R, G, B, A]
-
-
-def RGBA_to_sRGBA(color):
-    color = np.asarray(color, dtype=float).reshape(-1, 4)
-    R, G, B, A = color[..., 0], color[..., 1], color[..., 2], color[..., 3]
-    R = np.where(R > 0.0031308, 1.055 * np.power(R, 1 / 2.4) - 0.055, R * 12.92)
-    G = np.where(G > 0.0031308, 1.055 * np.power(G, 1 / 2.4) - 0.055, G * 12.92)
-    B = np.where(B > 0.0031308, 1.055 * np.power(B, 1 / 2.4) - 0.055, B * 12.92)
-    return np.c_[R, G, B, A]
-
-# def sRGBA_to_RGBA(color):
-#     color = np.asarray(color, dtype=float).reshape(-1, 4)
-#     color[...,:3] = np.power(color[:,:3],2.2)
-#     return color
-
-# def RGBA_to_sRGBA(color):
-#     color = np.asarray(color, dtype=float).reshape(-1, 4)
-#     color[...,:3] = np.power(color[:,:3],1/2.2)
-#     return color
-

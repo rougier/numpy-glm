@@ -29,8 +29,11 @@ class mat2(swizzle):
 
     swizzle = "xy", "ra"
     
-    def __new__(subtype, count=1, dtype=np.float32, buffer=None,
+    def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
+        if count is None:
+            return super().__new__(subtype, 1, mat2_t(dtype),
+                                   buffer, offset, strides, order).squeeze()
         return super().__new__(subtype, count, mat2_t(dtype),
                                buffer, offset, strides, order)
 
@@ -39,8 +42,11 @@ class mat3(swizzle):
 
     swizzle = "xyz", "rgb"
     
-    def __new__(subtype, count=1, dtype=np.float32, buffer=None,
+    def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
+        if count is None:
+            return super().__new__(subtype, 1, mat3_t(dtype),
+                                   buffer, offset, strides, order).squeeze()
         return super().__new__(subtype, count, mat3_t(dtype),
                                buffer, offset, strides, order)
 
@@ -49,7 +55,10 @@ class mat4(swizzle):
 
     swizzle = "xyzw", "rgba"
     
-    def __new__(subtype, count=1, dtype=np.float32, buffer=None,
+    def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
+        if count is None:
+            return super().__new__(subtype, 1, mat4_t(dtype),
+                                   buffer, offset, strides, order).squeeze()
         return super().__new__(subtype, count, mat4_t(dtype),
                                buffer, offset, strides, order)

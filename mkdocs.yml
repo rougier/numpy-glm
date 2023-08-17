@@ -1,0 +1,65 @@
+# To debug:
+#   griffe dump gsp -o/dev/null -LDEBUG
+#   mkdocs -v
+# See also https://github.com/mkdocstrings/mkdocstrings/issues/451
+site_name: OpenGL mathematics with Numpy
+use_directory_urls: false
+repo_url: https://github.com/rougier/gsp-matplotlib
+remote_name: origin # For mkdocs gh-deploy
+docs_dir: 'docs'
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.tabs
+    - navigation.tabs.sticky
+    
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+#  - section-index
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: yes
+            merge_init_into_class: yes
+            show_submodules: no
+            show_root_heading:  yes
+            show_source: yes
+            show_bases: yes
+            show_root_full_path: no
+            show_signature_annotations: yes
+            separate_signature: yes
+
+nav:
+ - Overview:
+   - index.md
+   - vecmat.md
+ - API:
+   - genvec.md
+   - genmat.md
+   - convec.md
+   - gl.md
+ - Examples:
+   - quickstart.md
