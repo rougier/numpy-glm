@@ -12,11 +12,11 @@ def bmat2(count = None):
 
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 2, 2) shaped numpy array with dtype np.ubyte
+        (np.ndarray): (count, 2, 2) shaped numpy array with dtype np.ubyte
     """
     return ndarray.mat2(count, dtype=np.uint8)
 
@@ -25,11 +25,11 @@ def imat2(count = None):
     
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 2, 2) shaped numpy array with dtype np.int8
+        (np.ndarray): (count, 2, 2) shaped numpy array with dtype np.int8
     """
     return ndarray.mat2(count, dtype=np.int32)
 
@@ -38,11 +38,11 @@ def umat2(count = None):
         
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 2, 2) shaped numpy array with dtype np.uint8
+        (np.ndarray): (count, 2, 2) shaped numpy array with dtype np.uint8
     """
     return ndarray.mat2(count, dtype=np.uint32)
 
@@ -51,11 +51,11 @@ def hmat2(count = None):
         
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 2, 2) shaped numpy array with dtype np.float16
+        (np.ndarray): (count, 2, 2) shaped numpy array with dtype np.float16
     """
     return ndarray.mat2(count, dtype=np.float16)
 
@@ -64,11 +64,11 @@ def mat2(count = None):
         
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 2, 2) shaped numpy array with dtype np.float32
+        (np.ndarray): (count, 2, 2) shaped numpy array with dtype np.float32
     """
     return ndarray.mat2(count, dtype=np.float32)
 
@@ -77,11 +77,11 @@ def dmat2(count = None):
         
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 2, 2) shaped numpy array with dtype np.float64
+        (np.ndarray): (count, 2, 2) shaped numpy array with dtype np.float64
     """
     return ndarray.mat2(count, dtype=np.float64)
 
@@ -90,11 +90,11 @@ def bmat3(count = None):
         
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 3, 3) shaped numpy array with dtype np.uint8
+        (np.ndarray): (count, 3, 3) shaped numpy array with dtype np.uint8
     """
     return ndarray.mat3(count, dtype=np.uint8)
 
@@ -103,11 +103,11 @@ def imat3(count = None):
             
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 3, 3) shaped numpy array with dtype np.int32
+        (np.ndarray): (count, 3, 3) shaped numpy array with dtype np.int32
     """
     return ndarray.mat3(count, dtype=np.int32)
 
@@ -116,11 +116,11 @@ def umat3(count = None):
             
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 3, 3) shaped numpy array with dtype np.uint32
+        (np.ndarray): (count, 3, 3) shaped numpy array with dtype np.uint32
     """
     return ndarray.mat3(count, dtype=np.uint32)
 
@@ -129,11 +129,11 @@ def hmat3(count = None):
             
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 3, 3) shaped numpy array with dtype np.float16
+        (np.ndarray): (count, 3, 3) shaped numpy array with dtype np.float16
     """
     return ndarray.mat3(count, dtype=np.float16)
 
@@ -142,11 +142,11 @@ def mat3(count = None):
             
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 3, 3) shaped numpy array with dtype np.float32
+        (np.ndarray): (count, 3, 3) shaped numpy array with dtype np.float32
     """
     return ndarray.mat3(count, dtype=np.float32)
 
@@ -155,11 +155,11 @@ def dmat3(count = None):
             
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 3, 3) shaped numpy array with dtype np.float64
+        (np.ndarray): (count, 3, 3) shaped numpy array with dtype np.float64
     """
     return ndarray.mat3(count, dtype=np.float64)
 
@@ -168,11 +168,11 @@ def bmat4(count = None):
             
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 4, 4) shaped numpy array with dtype np.uint8
+        (np.ndarray): (count, 4, 4) shaped numpy array with dtype np.uint8
     """
     return ndarray.mat4(count, dtype=np.uint8)
 
@@ -181,11 +181,11 @@ def imat4(count = None):
                 
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 4, 4) shaped numpy array with dtype np.int32
+        (np.ndarray): (count, 4, 4) shaped numpy array with dtype np.int32
     """
     return ndarray.mat4(count, dtype=np.int32)
 
@@ -194,11 +194,11 @@ def umat4(count = None):
                 
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 4, 4) shaped numpy array with dtype np.uint32
+        (np.ndarray): (count, 4, 4) shaped numpy array with dtype np.uint32
     """
     return ndarray.mat4(count, dtype=np.uint32)
 
@@ -207,11 +207,11 @@ def hmat4(count = None):
                 
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 4, 4) shaped numpy array with dtype np.float16
+        (np.ndarray): (count, 4, 4) shaped numpy array with dtype np.float16
     """
     return ndarray.mat4(count, dtype=np.float16)
 
@@ -220,11 +220,11 @@ def mat4(count = None):
                 
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 4, 4) shaped numpy array with dtype np.float32
+        (np.ndarray): (count, 4, 4) shaped numpy array with dtype np.float32
     """
     return ndarray.mat4(count, dtype=np.float32)
 
@@ -233,11 +233,11 @@ def dmat4(count = None):
                 
     Args:
 
-        count: Number of vectors to create
+        count (int): Number of vectors to create
 
     Returns:
 
-        (count, 4, 4) shaped numpy array with dtype np.float64
+        (np.ndarray): (count, 4, 4) shaped numpy array with dtype np.float64
     """
     return ndarray.mat4(count, dtype=np.float64)
 
