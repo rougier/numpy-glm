@@ -484,8 +484,7 @@
 
 
 <h1 id="introduction">Introduction</h1>
-<p>The Graphic Server Protocol (GSP) is meant to be an API between hardware and software, targeted at developpers who do not want to dive into the arcane of <a href="https://www.opengl.org">OpenGL</a>, <a href="https://developer.apple.com/metal">Metal</a> or <a href="https://www.vulkan.org/">Vulkan</a> but still want to benefit from GPU speed, versatily and quality.</p>
-<p>The overall goal of GSP is not to provide a general graphics API but rather to address <strong>only</strong> scientific visualization, which requires a far fewer number of objects and concepts, with specific requirements on rendering quality though. The API is voluntarily small and targets the smallest set of visuals that allow to render the vast majority of scientific plots (2d or 3d).</p>
+<p>GLM offers a set of objects and functions to ease the design of 3D applications while taking advantage of the numpy library. The main objects are vectors (<code>vec2</code>, <code>vec3</code>, <code>vec4</code>), matrices (<code>mat2</code>, <code>mat3</code>, <code>mat4</code>) and vectorized lists (<code>vlist</code>).  Vectors and matrices possess several variants depending on the base type and are memory tracked. This means it is possible to know anytime the smallest contiguous block of memory that has changed. This can be used to maintain a GPU copy up-to-date.</p>
 
 
 
