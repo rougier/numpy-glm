@@ -26,6 +26,7 @@
 #### 4. Generate and sort faces
 
   ```python
+  import numpy as np
   faces = vertices[indices]
   faces = faces[np.argsort(-faces[...,2].mean(axis=1))]
   ```
