@@ -58,7 +58,7 @@ class Camera():
             self.trackball = Trackball(theta, phi)
             self.proj = glm.perspective(
                 self.aperture, self.aspect, self.near, self.far)
-            self.view = glm.translate(0, 0, -zdist) @ glm.scale(scale)
+            self.view = glm.translate((0, 0, -zdist)) @ glm.scale((scale,scale,scale))
             self.transform[...] = self.proj @ self.view @ self.trackball.model.T
         self.updates = {"motion"  : [],
                         "scroll"  : [],
