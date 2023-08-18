@@ -1,13 +1,16 @@
 """
+Example by: Hana Zupan
 An example for displaying scipy spherical Voronoi cells.
 """
 import numpy as np
+from numpy.typing import ArrayLike
 import glm
 from glm.camera import Camera
 import matplotlib.pyplot as plt
-from scipy.spatial import SphericalVoronoi, geometric_slerp
+from scipy.spatial import SphericalVoronoi
 from matplotlib.collections import PolyCollection
 import matplotlib as mpl
+
 
 def random_spherical_point(n_points: int) -> np.ndarray:
     """
@@ -24,6 +27,14 @@ def random_spherical_point(n_points: int) -> np.ndarray:
 
 def sph_voronoi_random_points(n_points: int, radius: float = 1.0,
                               center: np.ndarray = None) -> SphericalVoronoi:
+    """
+    Use scipy function to create Voronoi cells on a sphere
+
+    :param n_points: wished number of points
+    :param radius: radius of the sphere
+    :param center: position of the center of the sphere
+    :return: the spherical voronoi with ordered vertices
+    """
     if center is None:
         center = np.zeros((3,))
     points = random_spherical_point(n_points)
@@ -31,13 +42,16 @@ def sph_voronoi_random_points(n_points: int, radius: float = 1.0,
     sv.sort_vertices_of_regions()
     return sv
 
-def _generate_faces(vertices, indexes):
+def _generate_faces(vertices: ArrayLike, indexes: ArrayLike) -> tuple:
     """
-    Something that works with lists of different lengths
+   Generate faces that may have different number of vertices. Order according
+   to the z-value (depth). Each face is a collection of belonging vertices.
+   We also return the sorting indices to help keep the color of each face
+   consistent.
 
-    :param vertices:
-    :param indexes:
-    :return: faces
+    :param vertices: each element a 3D vertix
+    :param indexes: each element a list of indices belonging to one face
+    :return: faces, sorting indices
     """
     faces = [vertices[i] for i in indexes]
     z = [-float(f[..., 2].mean()) for f in faces]
@@ -51,9 +65,8 @@ if __name__ == "__main__":
     my_n_points = 100
     my_sv = sph_voronoi_random_points(my_n_points)
 
-    use_colors = True
-    # Make a list of colors cycling through the default series.
-    mpl.style.use('classic')
+    # Make a list of colors of the right length
+    mpl.style.use('seaborn')
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
     my_colors = []
     while len(my_colors) < my_n_points:
@@ -72,6 +85,9 @@ if __name__ == "__main__":
 
 
     def update(transform):
+        """
+        To make a plot interactive.
+        """
         V = glm.to_vec3(glm.to_vec4(vertices) @ transform.T)
         F, ind = _generate_faces(V, indices)
         my_polygons.set_verts([f[..., :2] for f in F])
