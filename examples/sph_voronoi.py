@@ -44,10 +44,10 @@ def sph_voronoi_random_points(n_points: int, radius: float = 1.0,
 
 def _generate_faces(vertices: ArrayLike, indexes: ArrayLike) -> tuple:
     """
-   Generate faces that may have different number of vertices. Order according
-   to the z-value (depth). Each face is a collection of belonging vertices.
-   We also return the sorting indices to help keep the color of each face
-   consistent.
+    Generate faces that may have different number of vertices. Order according
+    to the z-value (depth). Each face is a collection of belonging vertices.
+    We also return the sorting indices to help keep the color of each face
+    consistent.
 
     :param vertices: each element a 3D vertix
     :param indexes: each element a list of indices belonging to one face
