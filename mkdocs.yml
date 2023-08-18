@@ -4,7 +4,7 @@
 # See also https://github.com/mkdocstrings/mkdocstrings/issues/451
 site_name: OpenGL mathematics with Numpy
 use_directory_urls: false
-repo_url: https://github.com/rougier/gsp-matplotlib
+repo_url: https://github.com/rougier/numpy-glm
 remote_name: origin # For mkdocs gh-deploy
 docs_dir: 'docs'
 
