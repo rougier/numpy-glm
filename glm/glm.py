@@ -229,7 +229,7 @@ def lookat(eye=(0,0,4.5), center=(0,0,0), up=(0,0,1), dtype=np.float32, transpos
         [X[0], X[1], X[2], -np.dot(X, eye)],
         [Y[0], Y[1], Y[2], -np.dot(Y, eye)],
         [Z[0], Z[1], Z[2], -np.dot(Z, eye)],
-        [0, 0, 0, 1]], dtype=dtypte).view(mat4)
+        [0, 0, 0, 1]], dtype=dtype).view(mat4)
 
 
 def scale(scale, dtype=np.float32, transpose=False):
