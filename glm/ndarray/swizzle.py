@@ -29,6 +29,9 @@ class swizzle(tracked):
         return super().__getattribute__(key)
 
     def __setattr__(self, key, value):
+        """
+        """
+        
         for swizzle in self.swizzle:
             if set(key).issubset(set(swizzle)):
                 value = np.asarray(value)
@@ -42,7 +45,7 @@ class swizzle(tracked):
                     for index in indices:
                         self[..., index] = np.squeeze(value)
                     break
-                elif shape[-1] == len(key):
+                elif len(self) == len(value) or shape[-1] == len(key):
                     for tgt_index, src_index in enumerate(indices):
                         if self[...,src_index].size == value[...,tgt_index].size:
                             self[...,src_index] = value[...,tgt_index].reshape(self[...,src_index].shape)
