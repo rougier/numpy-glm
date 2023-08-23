@@ -35,12 +35,36 @@ def test_mix():
     Z2[:] = 1, 2,3,4
     assert(np.array_equal(Z1, Z2))
 
-def test_set():
+def test_set_1():
     Z1 = vec2(10)
     Z1.x = 1*np.ones(10)
     Z1.y = 2*np.ones(10)
     Z2 = np.ones((10,2), dtype=np.float32)
     Z2[:] = 1,2
+    assert(np.array_equal(Z1, Z2))
+
+def test_set_2():
+    Z1 = vec2(10)
+    Z1.x = np.arange(10)
+    Z1.y = 2*np.arange(10)
+    Z2 = np.ones((10,2), dtype=np.float32)
+    Z2[:,0] = np.arange(10)
+    Z2[:,1] = 2*np.arange(10)
+    assert(np.array_equal(Z1, Z2))
+
+def test_set_3():
+    Z1 = vec2(10)
+    Z1.xy = np.arange(10), 2*np.arange(10)
+    Z2 = np.ones((10,2), dtype=np.float32)
+    Z2[:,0] = np.arange(10)
+    Z2[:,1] = 2*np.arange(10)
+    assert(np.array_equal(Z1, Z2))
+
+def test_set_4():
+    Z1 = vec2(10)
+    Z1.xy = np.arange(20).reshape(10,2)
+    Z2 = np.ones((10,2), dtype=np.float32)
+    Z2[...] = np.arange(20).reshape(10,2)
     assert(np.array_equal(Z1, Z2))
 
 def test_repeated_target():

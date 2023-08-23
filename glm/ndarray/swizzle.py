@@ -37,20 +37,28 @@ class swizzle(tracked):
                 value = np.asarray(value)
                 shape = value.shape
                 indices = [swizzle.index(c) for c in key]
+
+                # Z.xy = 1
                 if not len(shape):
                     for index in indices:
                         self[..., index] = value
                     break
-                elif shape[-1] == 1:
+                # Z.xy = np.ones(10)
+                elif len(self) == value.size: # shape[-1] == 1:
                     for index in indices:
                         self[..., index] = np.squeeze(value)
                     break
-                elif len(self) == len(value) or shape[-1] == len(key):
+                # Z.xy = np.ones(10), np.ones(10)
+                elif len(key) == len(value):
+                    for src_index, tgt_index in enumerate(indices):
+                        self[..., tgt_index] = value[src_index]
+                    break
+                # Z.xy = np.ones(10,2)
+                elif shape[-1] == len(key):
                     for tgt_index, src_index in enumerate(indices):
                         if self[...,src_index].size == value[...,tgt_index].size:
                             self[...,src_index] = value[...,tgt_index].reshape(self[...,src_index].shape)
                         else:
-                            
                             self[...,src_index] = value[...,tgt_index]
                     break
                 else:
