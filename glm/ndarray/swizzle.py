@@ -19,7 +19,7 @@ class swizzle(tracked):
     v.wzyx = 1,2,3,4 # equivalent to v[[3,2,1,0]] = 1,2,3,4
     ```
     """
-    
+
     swizzle = None
 
     def __getattr__(self, key):
@@ -31,7 +31,7 @@ class swizzle(tracked):
     def __setattr__(self, key, value):
         """
         """
-        
+
         for swizzle in self.swizzle:
             if set(key).issubset(set(swizzle)):
                 value = np.asarray(value)

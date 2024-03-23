@@ -22,7 +22,7 @@ def bmat2(count = None):
 
 def imat2(count = None):
     """2x2 matrices of integers (32 bits)
-    
+
     Args:
 
         count (int): Number of vectors to create
@@ -35,7 +35,7 @@ def imat2(count = None):
 
 def umat2(count = None):
     """2x2 matrices of unsigned integers (32 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -48,7 +48,7 @@ def umat2(count = None):
 
 def hmat2(count = None):
     """2x2 matrices of half precision floats (16 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -61,7 +61,7 @@ def hmat2(count = None):
 
 def mat2(count = None):
     """2x2 matrices of double precision floats (32 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -74,7 +74,7 @@ def mat2(count = None):
 
 def dmat2(count = None):
     """2x2 matrices of double precision floats (64 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -87,7 +87,7 @@ def dmat2(count = None):
 
 def bmat3(count = None):
     """3x3 matrices of booleans (8 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -100,7 +100,7 @@ def bmat3(count = None):
 
 def imat3(count = None):
     """3x3 matrices of integers (32 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -113,7 +113,7 @@ def imat3(count = None):
 
 def umat3(count = None):
     """3x3 matrices of unsigned integers (32 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -126,7 +126,7 @@ def umat3(count = None):
 
 def hmat3(count = None):
     """3x3 matrices of half precision floats (16 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -139,7 +139,7 @@ def hmat3(count = None):
 
 def mat3(count = None):
     """3x3 matrices of single precision floats (32 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -152,7 +152,7 @@ def mat3(count = None):
 
 def dmat3(count = None):
     """3x3 matrices of double precision floats (64 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -165,7 +165,7 @@ def dmat3(count = None):
 
 def bmat4(count = None):
     """4x4 matrices of booleans (8 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -178,7 +178,7 @@ def bmat4(count = None):
 
 def imat4(count = None):
     """4x4 matrices of integers (32 bits)
-                
+
     Args:
 
         count (int): Number of vectors to create
@@ -191,7 +191,7 @@ def imat4(count = None):
 
 def umat4(count = None):
     """4x4 matrices of unsigned integers (32 bits)
-                
+
     Args:
 
         count (int): Number of vectors to create
@@ -204,7 +204,7 @@ def umat4(count = None):
 
 def hmat4(count = None):
     """4x4 matrices of half precision floats (16 bits)
-                
+
     Args:
 
         count (int): Number of vectors to create
@@ -217,7 +217,7 @@ def hmat4(count = None):
 
 def mat4(count = None):
     """4x4 matrices of single precision floats (32 bits)
-                
+
     Args:
 
         count (int): Number of vectors to create
@@ -230,7 +230,7 @@ def mat4(count = None):
 
 def dmat4(count = None):
     """4x4 matrices of double precision floats (64 bits)
-                
+
     Args:
 
         count (int): Number of vectors to create
@@ -240,6 +240,3 @@ def dmat4(count = None):
         (np.ndarray): (count, 4, 4) shaped numpy array with dtype np.float64
     """
     return ndarray.mat4(count, dtype=np.float64)
-
-
-

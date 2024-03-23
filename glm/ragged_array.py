@@ -64,7 +64,7 @@ class ragged_array:
                 data = np.concatenate(data, axis=0).view(data[0].__class__)
             else:
                 data = np.concatenate(data, axis=0)
-            
+
         data = np.asanyarray(data)
         if itemsize is None:
             itemsize = len(data)
@@ -86,7 +86,7 @@ class ragged_array:
         C = np.cumsum(itemsize)
         self._items[1:, 0] += C[:-1]
         self._items[0:, 1] += C
-            
+
 
     def __getitem__(self, key):
         """ x.__getitem__(y) <==> x[y] """
@@ -152,8 +152,6 @@ class ragged_array:
             s += str(item) + ' '
         s += ']'
         return s
-    
+
     def __array__(self):
         return self.data
-    
-

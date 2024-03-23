@@ -24,7 +24,7 @@ def as_vec2(other, dtype = None):
 
         (vec2):  view or copy of other.
     """
-        
+
     V = np.asanyarray(other).reshape(-1,2)
     if dtype is None:
         return V.view(ndarray.vec2)
@@ -58,7 +58,7 @@ def to_vec2(other, dtype  = None):
     if len(V.shape) == 1 and V.size % 2 == 0:
         _V = ndarray.vec2(V.size//2, dtype)
         _V.ravel()[...] = V
-        return _V        
+        return _V
     elif len(V.shape) == 2:
         _V = ndarray.vec2(len(V), dtype)
         _V[...] = V[:,:2]
@@ -69,9 +69,9 @@ def to_vec2(other, dtype  = None):
         elif V.shape[1] == 4:
             _V /= V[:,3, np.newaxis]
             return _V
-    
-    raise TypeError("Cannot convert %s to vec2" % other) 
-    
+
+    raise TypeError("Cannot convert %s to vec2" % other)
+
 def bvec2(count = None):
     """2-components vectors of unsigned bytes (8 bits)
 
@@ -116,7 +116,7 @@ def uvec2(count = None):
 def hvec2(count = None):
     """2-components vectors of half precision floats (16 bits)
 
-    
+
     Args:
 
         count (int): Number of vectors to create
@@ -129,7 +129,7 @@ def hvec2(count = None):
 
 def vec2(count = None) -> np.ndarray:
     """2-components vectors of single precision floats (32 bits)
-    
+
     Args:
 
         count (int): Number of vectors to create
@@ -142,7 +142,7 @@ def vec2(count = None) -> np.ndarray:
 
 def dvec2(count = None) -> np.ndarray:
     """2-components vectors of double precision floats (64 bits)
-    
+
     Args:
 
         count (int): Number of vectors to create
@@ -153,7 +153,7 @@ def dvec2(count = None) -> np.ndarray:
     """
     return ndarray.vec2(count, dtype=np.float64)
 
-    
+
 def as_vec3(other, dtype = None):
     """ View other as a vec3 with given dtype
 
@@ -168,8 +168,8 @@ def as_vec3(other, dtype = None):
     Returns:
 
         (vec3): view or copy of other.
-    """    
-    
+    """
+
     V = np.asanyarray(other).reshape(-1,3)
     if dtype is None:
         return V.view(ndarray.vec3)
@@ -203,7 +203,7 @@ def to_vec3(other, dtype = None):
     if len(V.shape) == 1 and V.size % 3 == 0:
         _V = ndarray.vec3(V.size//3, dtype)
         _V.ravel()[...] = V
-        return _V        
+        return _V
     elif len(V.shape) == 2:
         _V = ndarray.vec3(len(V), dtype)
         if V.shape[1] == 2:
@@ -212,16 +212,16 @@ def to_vec3(other, dtype = None):
             return _V
         elif V.shape[1] == 3:
             _V[...] = V
-            return _V        
+            return _V
         elif V.shape[1] == 4:
             _V[...] = V[:,:3] / V[:,3, np.newaxis]
             return _V
-    
-    raise TypeError("Cannot convert %s to vec3" % other) 
+
+    raise TypeError("Cannot convert %s to vec3" % other)
 
 def bvec3(count = None):
     """3-components vectors of booleans (8 bits)
-    
+
     Args:
 
         count (int): Number of vectors to create
@@ -234,7 +234,7 @@ def bvec3(count = None):
 
 def ivec3(count = None):
     """3-components vectors of signed integers (32 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -247,20 +247,20 @@ def ivec3(count = None):
 
 def uvec3(count = None):
     """3-components vectors of unsigned integers (32 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
 
     Returns:
 
-        (np.ndarray): (count,3) shaped array with dtype np.uint32    
+        (np.ndarray): (count,3) shaped array with dtype np.uint32
     """
     return ndarray.vec3(count, dtype=np.uint32)
 
 def hvec3(count = None):
     """3-components vectors of half precision floats (16 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -273,7 +273,7 @@ def hvec3(count = None):
 
 def vec3(count = None):
     """3-components vectors of single precision floats (32 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -286,21 +286,21 @@ def vec3(count = None):
 
 def dvec3(count = None):
     """3-components vectors of double precision floats (64 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
 
     Returns:
 
-        (np.ndarray): (count,3) shaped array with dtype np.float64    
+        (np.ndarray): (count,3) shaped array with dtype np.float64
     """
     return ndarray.vec3(count, dtype=np.float64)
 
 
 def as_vec4(other, dtype = None):
     """ View other as a vec4 with given dtype
-    
+
     Args:
 
         other (np.ndarray):
@@ -312,8 +312,8 @@ def as_vec4(other, dtype = None):
     Returns:
 
         (vec4): view or copy of other.
-    """    
-        
+    """
+
     V = np.asanyarray(other).reshape(-1,4)
     if dtype is None:
         return V.view(ndarray.vec4)
@@ -347,7 +347,7 @@ def to_vec4(other, dtype = None):
     if len(V.shape) == 1 and V.size % 4 == 0:
         _V = ndarray.vec4(V.size//4, dtype)
         _V.ravel()[...] = V
-        return _V        
+        return _V
     elif len(V.shape) == 2:
         _V = ndarray.vec4(len(V), dtype)
         if V.shape[1] == 2:
@@ -358,16 +358,16 @@ def to_vec4(other, dtype = None):
         elif V.shape[1] == 3:
             _V[:,:3] = V
             _V[:, 3] = 1
-            return _V        
+            return _V
         elif V.shape[1] == 4:
             _V[...] = V
             return _V
-    
-    raise TypeError("Cannot convert %s to vec3" % other) 
+
+    raise TypeError("Cannot convert %s to vec3" % other)
 
 def bvec4(count = None):
     """4-components vectors of booleans (8 bits)
-        
+
     Args:
 
         count (int): Number of vectors to create
@@ -380,7 +380,7 @@ def bvec4(count = None):
 
 def ivec4(count = None):
     """4-components vectors of signed integers (32 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -393,7 +393,7 @@ def ivec4(count = None):
 
 def uvec4(count = None) -> np.ndarray:
     """4-components vectors of unsigned integers (32 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -406,7 +406,7 @@ def uvec4(count = None) -> np.ndarray:
 
 def hvec4(count = None) -> np.ndarray:
     """4-components vectors of half precision floats (16 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -419,7 +419,7 @@ def hvec4(count = None) -> np.ndarray:
 
 def vec4(count = None):
     """4-components vectors of single precision floats (32 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -432,7 +432,7 @@ def vec4(count = None):
 
 def dvec4(count = None):
     """4-components vectors of double precision floats (64 bits)
-            
+
     Args:
 
         count (int): Number of vectors to create
@@ -442,4 +442,3 @@ def dvec4(count = None):
         (np.ndarray): (count,4) shaped numpy array with dtype np.float64
     """
     return ndarray.vec4(count, dtype=np.float64)
-

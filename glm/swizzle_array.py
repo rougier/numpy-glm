@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Graphic Server Protocol (GSP) 
+# Graphic Server Protocol (GSP)
 # Copyright 2023 Nicolas P. Rougier - BSD 2 Clauses licence
 # -----------------------------------------------------------------------------
 import numpy as np
@@ -19,7 +19,7 @@ class swizzle_array(tracked_array):
     v.wzyx = 1,2,3,4 # equivalent to v[[3,2,1,0]] = 1,2,3,4
     ```
     """
-    
+
     swizzle = None
 
     def __getattr__(self, key):
@@ -47,7 +47,7 @@ class swizzle_array(tracked_array):
                         if self[...,src_index].size == value[...,tgt_index].size:
                             self[...,src_index] = value[...,tgt_index].reshape(self[...,src_index].shape)
                         else:
-                            
+
                             self[...,src_index] = value[...,tgt_index]
                     break
                 else:

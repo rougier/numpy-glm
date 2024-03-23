@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Graphic Server Protocol (GSP) 
+# Graphic Server Protocol (GSP)
 # Copyright 2023 Nicolas P. Rougier - BSD 2 Clauses licence
 # -----------------------------------------------------------------------------
 import numpy as np
@@ -29,9 +29,9 @@ class tracked_array(np.ndarray):
     interesting. However, you can modify the tracker to mirror a CPU array
     in GPU, by uploading the new data to the GPU in the `set_data` method.
     """
-    
+
     __tracker_class__ = None
-    
+
     def __new__(cls, *args, **kwargs):
         obj = np.ndarray.__new__(cls, *args, **kwargs)
         if cls.__tracker_class__ is not None:
@@ -68,7 +68,7 @@ class tracked_array(np.ndarray):
 
     def _update(self, start, stop):
         """ Update dirty region """
-        
+
         if isinstance(self.base, tracked_array):
             self.base._update(start, stop)
         else:
@@ -78,7 +78,7 @@ class tracked_array(np.ndarray):
                 start = min(self._dirty[0], start)
                 stop = max(self._dirty[1], stop)
                 self._dirty = start, stop
-                
+
     def _compute_extents(self, Z):
         """Compute extents (start, stop) in bytes in the base array"""
 
@@ -95,13 +95,13 @@ class tracked_array(np.ndarray):
     def __getitem__(self, key):
         Z = np.ndarray.__getitem__(self, key)
         if not hasattr(Z, 'shape') or Z.shape == ():
-            return Z        
+            return Z
         Z._extents = self._compute_extents(Z)
         return Z
 
     def __setitem__(self, key, value):
         Z = np.ndarray.__getitem__(self, key)
-        
+
         if Z.shape == ():
             # This test for the case of [...,index] notation. Since we
             # know the result is a scalar, we can safely remove the
@@ -111,14 +111,14 @@ class tracked_array(np.ndarray):
             key = tuple(np.mod(np.array(key), self.shape))
             offset = np.ravel_multi_index(key, self.shape, mode='wrap')*self.itemsize
             self._update(offset, offset+self.itemsize)
-                    
+
         # Test for fancy indexing
         elif (Z.base is not self and (isinstance(key, list) or
                (hasattr(key, '__iter__') and
                 any(isinstance(k, (list,np.ndarray)) for k in key)))):
             raise NotImplementedError("Fancy indexing not supported")
         else:
-            Z._extents = self._compute_extents(Z)            
+            Z._extents = self._compute_extents(Z)
             self._update(Z._extents[0], Z._extents[1])
         np.ndarray.__setitem__(self, key, value)
 
@@ -149,5 +149,3 @@ class tracked_array(np.ndarray):
     def __idiv__(self, other):
         self._update(self._extents[0], self._extents[1])
         return np.ndarray.__idiv__(self, other)
-
-

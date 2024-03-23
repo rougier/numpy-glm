@@ -12,27 +12,27 @@ __all__ = [ "vec2",  "vec3", "vec4",  "vec2_t", "vec3_t", "vec4_t" ]
 
 def scalar_t(dtype):
     """ scalar dtype """
-    
+
     return np.dtype(dtype)
 
 def vec2_t(dtype):
     """ vec2 dtype """
-    
+
     return np.dtype((dtype, 2))
 
 def vec3_t(dtype):
     """ vec3 dtype """
-    
+
     return np.dtype((dtype, 3))
 
 def vec4_t(dtype):
     """ vec4 dtype """
-        
+
     return np.dtype((dtype, 4))
 
 class scalar(tracked):
     """Array of scalars (tracked)"""
-    
+
     def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
         if count is None:
@@ -43,9 +43,9 @@ class scalar(tracked):
 
 class vec2(swizzle):
     """2 components vectors"""
-    
+
     swizzle = "xy", "ra"
-    
+
     def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
         if count is None:
@@ -56,9 +56,9 @@ class vec2(swizzle):
 
 class vec3(swizzle):
     """3 components vectors."""
-        
+
     swizzle = "xyz", "rgb"
-    
+
     def __new__(subtype, count=None, dtype=np.float32, buffer=None,
                 offset=0, strides=None, order=None, info=None):
         if count is None:
@@ -69,7 +69,7 @@ class vec3(swizzle):
 
 class vec4(swizzle):
     """4 components vectors"""
-    
+
     swizzle = "xyzw", "rgba"
 
     def __new__(subtype, count=None, dtype=np.float32, buffer=None,
