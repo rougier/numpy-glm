@@ -8,7 +8,8 @@ import numpy as np
 from . tracked import tracked
 from . swizzle import swizzle
 
-__all__ = [ "vec2",  "vec3", "vec4",  "vec2_t", "vec3_t", "vec4_t" ]
+__all__ = [ "scalar", "vec2",  "vec3", "vec4",
+            "scalar_t", "vec2_t", "vec3_t", "vec4_t" ]
 
 def scalar_t(dtype):
     """ scalar dtype """
