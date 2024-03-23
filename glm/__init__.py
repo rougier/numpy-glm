@@ -12,6 +12,3 @@ from . vlist import *
 from . vec234 import *
 from . mat234 import *
 from . shapes import sphere, cube
-from . camera import Camera
-
-

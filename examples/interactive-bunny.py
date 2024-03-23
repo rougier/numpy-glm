@@ -5,7 +5,7 @@
 import glm
 import meshio
 import numpy as np
-from glm.camera import Camera
+from camera import Camera
 import matplotlib.pyplot as plt
 from matplotlib.collections import PolyCollection
 
@@ -24,7 +24,7 @@ def update(transform):
     bunny.set_verts(F[...,:2])
 
 ax.add_collection(bunny)
-camera = glm.Camera("perspective", theta=-20, phi=2.5)
+camera = Camera("perspective", theta=-20, phi=2.5)
 camera.connect(ax, "motion",  update)
 update(camera.transform)
 plt.show()
